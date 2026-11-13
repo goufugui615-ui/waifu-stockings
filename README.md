@@ -4,8 +4,8 @@
 
 - **风格定位**：真人写实 / 商业时尚材质特写。最终效果是「专业摄影师拍的真实照片」，不是数字绘画，也不是 3D CG 渲染。
 - **内容来源**：基于提供的 PDF《真实摄影风格 · 游戏角色丝袜材质还原》提炼。`recipes.md` 的 R01 正文与英文关键词均逐字收录原文，R02–R05 是按同一骨架扩展的变体。
-- **工坊层扩展**（非 PDF 原文）：`references/elements.md` 要素库、`references/compliance.md` 红线与自检、`scripts/check_prompt.py`、`examples/` 示例，以及固定 5 段输出结构，都是为便于复用而新增的。
-- **版本**：1.0.1
+- **工坊层扩展**（非 PDF 原文）：`references/elements.md` 要素库、`references/compliance.md` 红线与自检、`scripts/` 下的两个校验脚本、`examples/` 示例，以及固定 5 段输出结构，都是为便于复用而新增的。
+- **版本**：1.0.2
 
 ## 安装
 
@@ -16,11 +16,23 @@ cp -r waifu-stockings <你的项目>/.claude/skills/  # 项目级
 ```
 
 ### Claude.ai（网页 / 桌面）
-把根目录的 `老婆们的丝袜.zip` 上传：Settings → Capabilities → Skills → Upload skill。
+把仓库根目录的 `老婆们的丝袜.zip` 上传：Settings → Capabilities → Skills → Upload skill。
 zip 内顶层目录为 `waifu-stockings/`，与 `SKILL.md` 的 `name` 一致，解压后可直接用。
+
+若客户端要求 `SKILL.md` 必须位于压缩包**根目录**，改用 `老婆们的丝袜_根目录版.zip`（文件相同，只是去掉了顶层目录）。
 
 ### DSH / WorkBuddy 等支持 skills 的客户端
 把整个 `waifu-stockings/` 目录（含 `SKILL.md` 与 `references/`）放进工作区的 `skills/` 下即可。
+
+## 关于 frontmatter
+
+`SKILL.md` 的 frontmatter **只保留 `name` 与 `description` 两个必需字段**：
+
+- `description` 的值里不出现「冒号 + 空格」—— 这会被 YAML 当成嵌套映射，导致整个 frontmatter 解析失败（常见的 `Triggers: ...` 写法就是这么踩坑的）；
+- `version`、`license` 移到正文首行，因为部分客户端不接受额外字段；
+- 无 BOM、首行 `---`、字段值不加引号也能安全解析。
+
+打包或上传前先跑一次 `python scripts/check_frontmatter.py` 兜底。
 
 ## 用法示例
 
@@ -40,24 +52,24 @@ zip 内顶层目录为 `waifu-stockings/`，与 `SKILL.md` 的 `name` 一致，�
 ## 目录
 
 ```
-SKILL.md                    技能说明、六步工作流、提示词模板、固定输出结构、自检清单（入口）
-README.md                   本文件
-references/elements.md      9 组要素库：材质 / 丹尼尔 / 颜色 / 花纹 / 边缘 / 场景 / 光线 / 镜头 / 负面词
-references/recipes.md       5 套可直接复制的配方（R01 PDF 原文逐字版 + 4 套扩展变体）
-references/compliance.md    合规红线、10 项自检 rubric、不合规请求改写示例
-examples/sample_output.txt  一份完整的 5 段输出示例（可作 few-shot）
-scripts/check_prompt.py     提示词合规与结构自检脚本（纯标准库，可直接运行）
+SKILL.md                        技能说明、六步工作流、提示词模板、固定输出结构、自检清单（入口）
+README.md                       本文件
+references/elements.md          9 组要素库：材质 / 丹尼尔 / 颜色 / 花纹 / 边缘 / 场景 / 光线 / 镜头 / 负面词
+references/recipes.md           5 套可直接复制的配方（R01 PDF 原文逐字版 + 4 套扩展变体）
+references/compliance.md        合规红线、10 项自检 rubric、不合规请求改写示例
+examples/sample_output.txt      一份完整的 5 段输出示例（可作 few-shot）
+scripts/check_frontmatter.py    frontmatter 格式校验（纯标准库）
+scripts/check_prompt.py         输出提示词的合规与结构自检（纯标准库）
 ```
 
 ## 自检脚本
 
 ```bash
-python scripts/check_prompt.py my_prompt.txt
-# 或从管道读入
-type my_prompt.txt | python scripts/check_prompt.py
+python scripts/check_frontmatter.py            # 打包/上传前：校验 SKILL.md frontmatter
+python scripts/check_prompt.py my_prompt.txt   # 出图前：校验提示词结构与合规
 ```
 
-脚本检查必需词、一票否决词与 5 段结构，输出逐项结果与总分；不替代人工判断，只用于快速兜底。
+两个脚本都只用标准库，输出逐项结果与结论；不替代人工判断，只用于快速兜底。
 
 ## 使用边界
 
