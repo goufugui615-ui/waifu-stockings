@@ -1,7 +1,7 @@
 ---
 name: waifu-stockings
 description: 老婆们的丝袜 —— 游戏角色丝袜材质真人摄影提示词工坊。把「角色 + 丝袜款式 + 场景 + 光线」需求转成可复现的真人写实摄影提示词，严格还原丝袜材质、透肤度、编织纹理与自然光学表现，输出中文提示词、英文关键词、负面词、参数与自检结论。内置 9 组要素库、5 套配方与合规红线。Triggers: 丝袜, 袜子材质, 材质特写, 真人cos, 写实摄影提示词, stockings, pantyhose, nylon weave, photorealistic.
-version: 1.0.0
+version: 1.0.1
 license: 个人学习与创作参考；角色版权归原作者，禁止商用与二次分发
 ---
 
@@ -47,6 +47,8 @@ license: 个人学习与创作参考；角色版权归原作者，禁止商用�
 
 ## 正向提示词模板（中文）
 
+> 模板在 PDF 原文基础上增加了 `<作品>` / `<角色名>` / `<材质>` 等占位槽，便于按角色复用；`references/recipes.md` 的 R01 保留 PDF 逐字原文（无占位），两者材质骨架一致。
+
 ```
 以参考图中<作品>角色<角色名>的服装与造型为参考，将角色真实真人化，呈现为一位成年女性，严格还原原角色的丝袜款式、颜色、图案、边缘设计、服装配色及标志性细节。
 <场景：地点 + 织物纹理 + 环境细节 + 光线来源>，场景简洁干净。
@@ -58,13 +60,15 @@ license: 个人学习与创作参考；角色版权归原作者，禁止商用�
 最终效果必须像现实中由专业摄影师拍摄的真实照片，而不是任何形式的数字绘画或电脑生成的 3D 渲染。
 ```
 
-**英文关键词（基准组，可直接拼接）：**
-`Photorealistic, Ultra-realistic photography, Live-action cosplay photography, Real human anatomy, Authentic textile texture, Natural skin pores, Fine nylon weave, Real-world lighting, Professional fashion editorial photography, 85mm lens, RAW photo quality, Natural optical depth of field`
+**英文关键词（基准组，前 9 个为 PDF 原文逐字收录）：**
+`Photorealistic, Ultra-realistic photography, Live-action cosplay photography, Real human anatomy, Authentic textile texture, Natural skin pores, Fine nylon weave, Real-world lighting, Professional fashion editorial photography`
 
-**负面词（基准组）：**
+可选追加（工坊扩展，非 PDF 原文）：`85mm lens, RAW photo quality, Natural optical depth of field`
+
+**负面词（基准组，工坊扩展）：**
 `数字绘画, 3D渲染, CG, 插画, 动漫, 手办感, 塑料反光, 橡胶质感, 过度磨皮, 蜡像皮肤, 织物纹理缺失, 人体畸变, 多余肢体, 裁切脚部, 裸露, 色情暗示, 未成年, 真人明星换脸, 水印, 文字`
 
-**改动规则**：换角色只改第 1 句；换丝袜规格只改第 4、6 句；换场景光线只改第 2 句和参数段；**其余句子是材质骨架，一率保留**，这是还原度的来源。
+**改动规则**：换角色只改第 1 句；换丝袜规格只改第 4、6 句；换场景光线只改第 2 句和参数段；**其余句子是材质骨架，一律保留**，这是还原度的来源。
 
 ## 输出自检清单（10 项，逐项在【自检结论】里写明）
 
